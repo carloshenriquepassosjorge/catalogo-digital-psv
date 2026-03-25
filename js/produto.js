@@ -38,29 +38,32 @@ document.addEventListener('DOMContentLoaded', function() {
             const isFirst = !heroSection.classList.contains('slide-ready');
 
             if (isFirst) {
-                // Primeira imagem: fade in direto sem crossfade
+                // Primeira imagem: coloca direto no ::before, sem fade
                 heroSection.style.setProperty('--slide-current', `url('../${src}')`);
                 heroSection.classList.add('slide-ready');
                 transitioning = false;
             } else {
-                // Crossfade:
-                // 1. hero-bg assume imagem ATUAL (para segurar fundo durante transição)
-                const currentBg = heroSection.style.getPropertyValue('--slide-current');
-                if (heroBg) heroBg.style.backgroundImage = currentBg.trim();
+                // Crossfade real:
+                // 1. hero-bg (z-index 2) recebe a nova imagem e faz fade-in sobre ::before
+                heroBg.style.backgroundImage = `url('../${src}')`;
 
-                // 2. ::before recebe nova imagem mas começa invisível
-                heroSection.style.setProperty('--slide-current', `url('../${src}')`);
-                heroSection.classList.remove('slide-ready');
-
-                // 3. Pequeno delay para garantir que o browser aplicou a nova imagem
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
-                        // 4. Faz ::before (nova imagem) aparecer sobre hero-bg (antiga)
-                        heroSection.classList.add('slide-ready');
+                        heroBg.classList.add('visible'); // fade-in 0.7s
+
                         setTimeout(() => {
-                            if (heroBg) heroBg.style.backgroundImage = '';
-                            transitioning = false;
-                        }, 900);
+                            // 2. Após fade-in: atualiza ::before com nova imagem
+                            heroSection.style.setProperty('--slide-current', `url('../${src}')`);
+                            // 3. Esconde hero-bg instantaneamente (sem transição)
+                            heroBg.style.transition = 'none';
+                            heroBg.classList.remove('visible');
+                            heroBg.style.backgroundImage = '';
+                            // 4. Restaura transição para próximo slide
+                            requestAnimationFrame(() => {
+                                heroBg.style.transition = '';
+                                transitioning = false;
+                            });
+                        }, 750);
                     });
                 });
             }

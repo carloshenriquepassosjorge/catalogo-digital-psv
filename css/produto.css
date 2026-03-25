@@ -42,21 +42,12 @@
     flex-direction: column;
     height: 900px;
     padding: 48px 80px;
-    background: var(--color-white);
+    background: var(--color-black);
     border-radius: 0 0 16px 16px;
     overflow: hidden;
 }
 
-.hero-bg {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 0 0 16px 16px;
-    z-index: 0;
-}
-
+/* Camada base — imagem atual, sempre visível */
 .hero-produto::before {
     content: '';
     position: absolute;
@@ -64,11 +55,23 @@
     background: var(--slide-current) center/cover no-repeat;
     border-radius: 0 0 16px 16px;
     z-index: 1;
-    opacity: 0;
-    transition: opacity 0.6s ease;
+    opacity: 1;
 }
 
-.hero-produto.slide-ready::before {
+/* Camada superior — nova imagem, faz fade-in sobre a base */
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 0 0 16px 16px;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+}
+
+.hero-bg.visible {
     opacity: 1;
 }
 
