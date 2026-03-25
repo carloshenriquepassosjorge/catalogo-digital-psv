@@ -1,0 +1,1095 @@
+/* PS DO VIDRO - Página de Produto */
+
+/* === DESIGN TOKENS === */
+:root {
+    --color-red: #A31415;
+    --color-black: #201A15;
+    --color-white: #FAFAFA;
+    --color-grey: #D9D9D9;
+    --color-green: #4CB153;
+    
+    --font-main: 'Open Sans', sans-serif;
+    
+    /* Typography */
+    --h1-size: 48px;
+    --h1-weight-bold: 800;
+    --h1-weight-light: 300;
+    --h1-line-height: 75px;
+    
+    --h2-size: 32px;
+    --h2-weight: 300;
+    
+    --h3-size: 24px;
+    --h3-weight: 300;
+    
+    --subhead-size: 16px;
+    --subhead-weight: 300;
+    
+    --body-size: 14px;
+    --body-weight: 400;
+    
+    --button-size: 12px;
+    --button-weight: 500;
+    
+    --legenda-size: 10px;
+    --legenda-weight: 400;
+}
+
+/* === HERO PRODUTO === */
+.hero-produto {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 900px;
+    padding: 48px 80px;
+    background: var(--color-white);
+    border-radius: 0 0 16px 16px;
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 0 0 16px 16px;
+    z-index: 0;
+}
+
+.hero-produto::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--slide-current) center/cover no-repeat;
+    border-radius: 0 0 16px 16px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.hero-produto.slide-ready::before {
+    opacity: 1;
+}
+
+/* White fade no bottom do hero */
+.hero-produto::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 88px;
+    background: linear-gradient(to bottom, rgba(250, 250, 250, 0) 0%, #FAFAFA 88.942%);
+    z-index: 1;
+}
+
+/* Header do Produto */
+.header-produto {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+.header-produto .logo {
+    height: 40px;
+    width: 79px;
+    object-fit: contain;
+}
+
+.header-produto .header-label {
+    font-family: var(--font-main);
+    font-size: var(--button-size);
+    font-weight: var(--button-weight);
+    text-transform: uppercase;
+    color: var(--color-black);
+    letter-spacing: 0;
+}
+
+/* Hero Content - Layout simplificado */
+.hero-produto-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex: 1;
+    padding: 88px 0;
+    align-items: flex-start;
+}
+
+/* Coluna Esquerda - Título Principal */
+.hero-produto-left {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    flex: 1;
+    min-width: 0;
+}
+
+.produto-titulo {
+    font-family: var(--font-main);
+    font-size: var(--h1-size);
+    line-height: var(--h1-line-height);
+    color: var(--color-black);
+    margin: 0;
+}
+
+.produto-titulo .bold {
+    font-weight: var(--h1-weight-bold);
+    color: var(--color-red);
+}
+
+.produto-titulo .light {
+    font-weight: var(--h1-weight-light);
+}
+
+.produto-descricao {
+    font-family: var(--font-main);
+    font-size: var(--subhead-size);
+    font-weight: var(--subhead-weight);
+    line-height: 1.5;
+    color: var(--color-black);
+    margin: 0;
+    max-width: 480px;
+    word-wrap: break-word;
+}
+
+.btn-saiba-mais {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    padding: 8px 32px;
+    border: 1px solid rgba(163, 20, 21, 0.25);
+    border-radius: 30px;
+    background: transparent;
+    backdrop-filter: blur(0.5px);
+    font-family: var(--font-main);
+    font-size: var(--button-size);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-red);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0.9;
+    width: fit-content;
+}
+
+.btn-saiba-mais:hover {
+    border-color: var(--color-red);
+    opacity: 1;
+}
+
+/* Seção de Descrição Expandida */
+.descricao-section {
+    padding: 48px 80px 64px 80px;
+    background: var(--color-bg);
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.descricao-section.active {
+    display: flex;
+    opacity: 1;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Animações on scroll */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInSlideLeft {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Aplicar animações nos elementos */
+.section-small-label,
+.opcoes-titulo,
+.coluna-titulo,
+.credibilidade-titulo {
+    opacity: 0;
+    animation: slideUp 0.6s ease-out forwards;
+}
+
+/* Parágrafos descritivos */
+.descricao-section p {
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.descricao-section p:nth-child(1) { animation-delay: 0.1s; }
+.descricao-section p:nth-child(2) { animation-delay: 0.3s; }
+
+/* Animar apenas obras, NÃO os tag-items de personalização */
+.obra-item {
+    opacity: 0;
+    animation: fadeInSlideLeft 0.6s ease-out forwards;
+}
+
+
+/* Delays progressivos para obras */
+.obra-item:nth-child(1) { animation-delay: 0.1s; }
+.obra-item:nth-child(2) { animation-delay: 0.15s; }
+.obra-item:nth-child(3) { animation-delay: 0.2s; }
+.obra-item:nth-child(4) { animation-delay: 0.25s; }
+.obra-item:nth-child(5) { animation-delay: 0.3s; }
+.obra-item:nth-child(6) { animation-delay: 0.35s; }
+
+.descricao-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.descricao-section p {
+    font-family: var(--font-main);
+    font-size: var(--body-size);
+    font-weight: var(--body-weight);
+    line-height: 1.5;
+    color: var(--color-black);
+    margin: 0;
+    max-width: 65ch;
+}
+
+.descricao-section p:last-child {
+    margin-bottom: 0;
+}
+
+.descricao-section .highlight-red {
+    font-weight: 700;
+    color: var(--color-red);
+}
+
+.descricao-section .highlight-medium {
+    font-weight: 500;
+}
+
+.descricao-section .highlight-green {
+    font-weight: 700;
+    color: var(--color-green);
+}
+
+/* Seção de título mobile - Escondida no desktop */
+.produto-info-mobile {
+    display: none;
+    padding: 48px 40px;
+    background: var(--color-bg);
+}
+
+.produto-info-mobile .produto-titulo,
+.produto-info-mobile .produto-descricao,
+.produto-info-mobile .btn-saiba-mais {
+    /* Herda estilos da versão desktop */
+}
+
+/* Hero Footer */
+.hero-produto-footer {
+    position: absolute;
+    bottom: 64px;
+    left: 80px;
+    right: 80px;
+    z-index: 10;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* Slider Dots */
+.slider-dots {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.slider-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.slider-dot.active {
+    background: var(--color-black);
+}
+
+.slider-dot:not(.active) {
+    background: var(--color-grey);
+    border: 1px solid var(--color-grey);
+    mix-blend-mode: multiply;
+}
+
+/* Navegação do Produto */
+.produto-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.produto-nav-label {
+    font-family: var(--font-main);
+    font-size: var(--subhead-size);
+    line-height: 1;
+    color: var(--color-black);
+    padding: 0 2px;
+    width: 100%;
+}
+
+.produto-nav-label .bold {
+    font-weight: 600;
+    color: var(--color-red);
+}
+
+.produto-nav-label .light {
+    font-weight: 300;
+}
+
+/* Nav Buttons Container */
+.nav-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.produto-nav-arrows {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.nav-arrow {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--color-grey);
+    border-radius: 50%;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    padding: 0;
+}
+
+.nav-arrow:disabled,
+.nav-arrow.inactive {
+    opacity: 0.2;
+    background: rgba(255, 255, 255, 0.38);
+    cursor: not-allowed;
+}
+
+.nav-arrow:not(:disabled):hover {
+    border-color: var(--color-black);
+}
+
+.nav-arrow img {
+    width: 16px;
+    height: 8px;
+    object-fit: contain;
+}
+
+.nav-arrow.next img {
+	transform: none;
+}
+
+.btn-menu-categorias {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 4px 16px;
+    border: 1px solid var(--color-grey);
+    border-radius: 35px;
+    background: transparent;
+    font-family: var(--font-main);
+    font-size: var(--button-size);
+    font-weight: var(--button-weight);
+    text-transform: uppercase;
+    color: var(--color-black);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.btn-menu-categorias:hover {
+    border-color: var(--color-black);
+    color: var(--color-black);
+}
+
+.btn-menu-categorias img {
+    width: 16px;
+    height: 18px;
+}
+
+/* === SEÇÃO OPÇÕES E PERSONALIZAÇÃO === */
+.opcoes-section {
+    position: relative;
+    padding: 48px 80px;
+    background: var(--color-white);
+}
+
+.opcoes-titulo {
+    font-family: var(--font-main);
+    font-size: var(--h3-size);
+    font-weight: var(--h3-weight);
+    line-height: 1;
+    color: var(--color-black);
+    margin: 0 0 48px 0;
+}
+
+.opcoes-titulo .bold {
+    font-weight: 700;
+    color: var(--color-red);
+}
+
+/* Wrapper principal com specs e technical */
+.opcoes-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 91px;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Container das 3 colunas de specs */
+.opcoes-colunas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+/* Coluna individual */
+.opcao-coluna {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.opcao-coluna.vidros {
+    width: 154px;
+}
+
+.opcao-coluna.ferragens {
+    width: 152px;
+}
+
+/* Divisor vertical entre colunas */
+.coluna-divider {
+    width: 1px;
+    align-self: stretch;
+    background: var(--color-grey);
+    flex-shrink: 0;
+}
+
+/* Título da coluna */
+.coluna-titulo {
+    font-family: var(--font-main);
+    font-size: var(--body-size);
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--color-red);
+    margin: 0;
+}
+
+/* Grupo de opções */
+.opcao-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.opcao-grupo.especificacoes {
+    height: 126px;
+}
+
+.grupo-label {
+    font-family: var(--font-main);
+    font-size: var(--body-size);
+    font-weight: var(--body-weight);
+    color: var(--color-black);
+    margin: 0;
+}
+
+/* Tags de especificação (com borda) */
+.tag-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 16px 4px 4px;
+    border: 1px solid var(--color-grey);
+    border-radius: 35px;
+    overflow: hidden;
+    width: fit-content;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Tag-items sem borda (cores/materiais) */
+.tag-item.no-border {
+    border: 1px solid transparent;
+    opacity: 0.8;
+}
+
+/* Hover State - border visível, 100% opacidade */
+.tag-item.no-border:hover {
+    border-color: var(--color-grey);
+    opacity: 1;
+}
+
+/* Active State - mantém hover state */
+.tag-item.no-border.active {
+    border-color: var(--color-grey);
+    opacity: 1;
+}
+
+.tag-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.tag-label {
+    font-family: var(--font-main);
+    font-size: var(--legenda-size);
+    font-weight: var(--legenda-weight);
+    color: var(--color-black);
+    white-space: nowrap;
+}
+
+/* Lista de tags */
+.tags-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* === SEÇÃO MONTAGEM === */
+.opcao-coluna.montagem {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 160px;
+}
+
+.medidas-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.medida-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.medida-item .grupo-label {
+    position: static;
+}
+
+.medida-item .tag-item {
+    position: static;
+    width: fit-content;
+}
+
+/* Sob Medida */
+.sob-medida {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 219px;
+}
+
+.sob-medida .coluna-titulo {
+    margin: 0;
+}
+
+.sob-medida-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sob-medida-content p {
+    font-family: var(--font-main);
+    font-size: var(--body-size);
+    font-weight: var(--body-weight);
+    color: var(--color-black);
+    margin: 0;
+}
+
+.sob-medida-content p strong {
+    font-weight: 700;
+}
+
+.aviso-destaque {
+    font-family: var(--font-main);
+    font-size: var(--button-size);
+    font-weight: var(--button-weight);
+    text-transform: uppercase;
+    color: var(--color-red);
+    margin: 0;
+}
+
+/* Badge de classificação */
+.tag-level {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.tag-level-circle {
+    width: 24px;
+    height: 24px;
+    background: var(--color-green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tag-level-letter {
+    font-family: var(--font-main);
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+}
+
+/* Desenho Técnico */
+.desenho-tecnico {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 486px;
+    height: 402px;
+    padding: 16px 0 32px 0;
+    flex-shrink: 0;
+}
+
+.desenho-tecnico img {
+    width: 100%;
+    height: 92.19%;
+    object-fit: contain;
+}
+
+/* Botão Assistente (Dúvidas) - posição fixa à direita */
+.assistente-btn {
+    position: absolute;
+    right: 0;
+    top: 182px;
+    width: 41px;
+    height: 93px;
+    background: var(--color-red);
+    border-radius: 8px 0 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    z-index: 10;
+}
+
+.assistente-btn span {
+    font-family: var(--font-main);
+    font-size: var(--button-size);
+    font-weight: var(--button-weight);
+    text-transform: uppercase;
+    color: white;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+}
+
+/* === SEÇÃO CREDIBILIDADE / PORTFOLIO === */
+.credibilidade-section {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    align-items: center;
+    padding: 48px 0;
+    background: var(--color-white);
+}
+
+.credibilidade-divider {
+    width: 1280px;
+    height: 1px;
+    background: var(--color-grey);
+}
+
+.credibilidade-titulo {
+    font-family: var(--font-main);
+    font-size: var(--h2-size);
+    font-weight: var(--h2-weight);
+    line-height: 1;
+    color: var(--color-black);
+    text-align: center;
+    margin: 0;
+    width: 534px;
+}
+
+.credibilidade-titulo .bold {
+    font-weight: 700;
+    color: var(--color-red);
+}
+
+.galeria-obras {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.obra-item {
+    flex: 1 0 0;
+    min-width: 0;
+    min-height: 0;
+    height: 365px;
+    opacity: 0.8;
+    position: relative;
+}
+
+.obra-item img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.97;
+    transition: transform 0.3s ease;
+}
+
+.obra-item:hover img {
+    transform: scale(1.02);
+}
+
+/* === CTA PRODUTO === */
+.cta-produto {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 128px;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 80px;
+    overflow: hidden;
+}
+
+.cta-produto .cta-background {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.cta-produto .cta-background::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--color-red);
+}
+
+.cta-produto .cta-background img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.35;
+}
+
+.cta-produto .cta-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    color: white;
+}
+
+.cta-produto .cta-title {
+    font-family: var(--font-main);
+    font-size: var(--h2-size);
+    font-weight: var(--h2-weight);
+    line-height: 1;
+    color: white;
+    margin: 0;
+}
+
+.cta-produto .cta-title .bold {
+    font-weight: 700;
+}
+
+.cta-produto .cta-description {
+    font-family: var(--font-main);
+    font-size: var(--body-size);
+    font-weight: var(--body-weight);
+    line-height: 1;
+    color: white;
+    margin: 0;
+}
+
+.cta-produto .cta-button {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 32px;
+    border: 1px solid rgba(250, 250, 250, 0.27);
+    border-radius: 30px;
+    background: transparent;
+    font-family: var(--font-main);
+    font-size: var(--button-size);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-white);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.cta-produto .cta-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(0.5px);
+    border-color: rgba(250, 250, 250, 0.5);
+}
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 1400px) {
+    .hero-produto-content {
+        gap: 200px;
+    }
+    
+    .opcoes-wrapper {
+        gap: 48px;
+    }
+    
+    .desenho-tecnico {
+        width: 400px;
+    }
+    
+    .credibilidade-divider {
+        width: 90%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .hero-produto {
+        height: auto;
+        min-height: 800px;
+    }
+    
+    .hero-produto-content {
+        flex-direction: column;
+        gap: 48px;
+        padding: 48px 0;
+    }
+    
+    .descricao-section {
+        padding: 48px 16px;
+    }
+    
+    .opcoes-wrapper {
+        flex-direction: column;
+    }
+    
+    .desenho-tecnico {
+        width: 100%;
+        max-width: 486px;
+    }
+    
+    .credibilidade-titulo {
+        width: 90%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .hero-produto,
+    .opcoes-section,
+    .cta-produto {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    
+    /* Esconder título dentro do hero */
+    .hero-produto-left {
+        display: none;
+    }
+    
+    /* Ajustar hero para só mostrar imagem */
+    .hero-produto-content {
+        padding: 0;
+    }
+    
+    /* Mostrar seção de título fora do hero */
+    .produto-info-mobile {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        padding: 48px 40px;
+    }
+    
+    /* Ajustar controles ao padding */
+    .hero-produto-footer {
+        left: 40px;
+        right: 40px;
+    }
+    
+    .opcoes-colunas {
+        flex-wrap: wrap;
+    }
+    
+    .coluna-divider {
+        display: none;
+    }
+    
+    .galeria-obras {
+        flex-wrap: wrap;
+    }
+    
+    .obra-item {
+        flex: 1 0 calc(33.333% - 4px);
+        height: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-produto,
+    .opcoes-section,
+    .cta-produto {
+        padding: 32px 16px;
+    }
+    
+    /* Esconder título dentro do hero */
+    .hero-produto-left {
+        display: none;
+    }
+    
+    /* Seção mobile */
+    .produto-info-mobile {
+        padding: 32px 16px;
+    }
+    
+    .produto-titulo {
+        font-size: 40px;
+        line-height: 48px;
+    }
+    
+    .produto-descricao {
+        font-size: 18px;
+        max-width: 100%;
+    }
+    
+    .hero-produto-footer {
+        left: 16px;
+        right: 16px;
+        bottom: 32px;
+        flex-direction: column;
+        gap: 24px;
+        align-items: flex-start;
+    }
+    
+    .produto-nav {
+        width: 100%;
+    }
+    
+    .nav-buttons {
+        flex-wrap: wrap;
+    }
+    
+    .opcoes-titulo {
+        font-size: 24px;
+    }
+    
+    .opcao-coluna.vidros,
+    .opcao-coluna.ferragens {
+        width: 100%;
+        height: auto;
+    }
+    
+    .sob-medida {
+        width: 100%;
+    }
+    
+    .desenho-tecnico {
+        height: auto;
+    }
+    
+    .credibilidade-titulo {
+        font-size: 32px;
+    }
+    
+    /* Portfolio como carrossel horizontal scrollável */
+    .galeria-obras {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        gap: 8px;
+    }
+    
+    .obra-item {
+        flex: 0 0 280px;
+        height: 200px;
+        scroll-snap-align: start;
+    }
+    
+    /* CTA vertical no mobile */
+    .cta-produto {
+        flex-direction: column;
+        gap: 24px;
+    }
+    
+    .cta-produto .cta-content {
+        align-items: flex-start;
+        text-align: left;
+    }
+    
+    .cta-produto .cta-button {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .cta-produto .cta-title {
+        font-size: 32px;
+    }
+    
+    .assistente-btn {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .produto-titulo {
+        font-size: 32px;
+        line-height: 38px;
+    }
+}
