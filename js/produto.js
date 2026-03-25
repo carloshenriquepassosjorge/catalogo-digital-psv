@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 // Crossfade real:
                 // 1. hero-bg (z-index 2) recebe a nova imagem e faz fade-in sobre ::before
-                heroBg.style.backgroundImage = `url('../${src}')`;
+                heroBg.style.backgroundImage = `url('${src}')`;
 
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
