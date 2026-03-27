@@ -18,6 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 accordionItem.classList.remove('active');
             } else {
                 accordionItem.classList.add('active');
+                // Scroll para o header do accordion aberto
+                setTimeout(() => {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 50);
             }
         });
     });

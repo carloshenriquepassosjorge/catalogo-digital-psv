@@ -61,7 +61,8 @@ button, a { font-family: inherit; text-decoration: none; color: inherit; cursor:
 .product-card-normal:hover { background: rgba(255,255,255,1); }
 .product-card-normal.first { background: rgba(255,255,255,1); backdrop-filter: blur(2.65px); }
 .product-thumb-normal { width: 240px; height: 240px; }
-.product-thumb-normal img { width: 100%; height: 100%; object-fit: cover; }
+.product-thumb-normal img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: opacity 0.35s ease; }
+.product-card-normal:hover .product-thumb-normal img { opacity: 1; }
 
 /* === ACCORDION === */
 .accordion-container { padding: 64px 80px 96px; }
@@ -72,7 +73,7 @@ button, a { font-family: inherit; text-decoration: none; color: inherit; cursor:
 .accordion-title { font-size: 32px; font-weight: 300; flex: 1; white-space: pre-wrap; text-align: left; }
 .accordion-title .bold { font-weight: 700; color: #A31415; }
 .accordion-button { width: 24px; height: 24px; padding: 8px; display: flex; align-items: center; justify-content: center; }
-.accordion-content { display: none; flex-wrap: wrap; gap: 4px; }
+.accordion-content { display: none; flex-wrap: wrap; column-gap: 4px; row-gap: 32px; }
 .accordion-item.active .accordion-content { display: flex; }
 
 /* === CTA === */
