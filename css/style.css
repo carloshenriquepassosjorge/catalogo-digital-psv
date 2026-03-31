@@ -55,11 +55,12 @@ button, a { font-family: inherit; text-decoration: none; color: inherit; cursor:
   height: 420px; 
   flex-shrink: 0; 
 }
-.product-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.product-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: opacity 0.35s ease; }
+.product-card-destaque:hover .product-thumb img { opacity: 1; }
 
 .product-card-normal { display: flex; flex-direction: column; background: rgba(255,255,255,0.03); backdrop-filter: blur(3.1px); cursor: pointer; transition: background 0.3s; flex-shrink: 0; }
 .product-card-normal:hover { background: rgba(255,255,255,1); }
-.product-card-normal.first { background: rgba(255,255,255,1); backdrop-filter: blur(2.65px); }
+.product-card-normal.first { background: rgba(255,255,255,0.6); backdrop-filter: blur(2.65px); }
 .product-thumb-normal { width: 240px; height: 240px; }
 .product-thumb-normal img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: opacity 0.35s ease; }
 .product-card-normal:hover .product-thumb-normal img { opacity: 1; }
