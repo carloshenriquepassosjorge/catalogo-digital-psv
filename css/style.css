@@ -30,9 +30,9 @@ button, a { font-family: inherit; text-decoration: none; color: inherit; cursor:
 .destaques-container { padding: 64px 80px; height: 835px; }
 .section-small-label { font-size: 14px; font-weight: 500; text-transform: uppercase; margin-bottom: 48px; }
 .destaques-content { position: relative; flex: 1; }
-.destaques-heading { position: absolute; left: 0; top: 0; font-size: 48px; font-weight: 300; line-height: normal; width: 1280px; }
+.destaques-heading { position: absolute; left: 0; top: 0; font-size: 32px; font-weight: 300; line-height: normal; width: 1280px; }
 .destaques-heading .bold { font-weight: 700; color: #A31415; }
-.product-thumbs { position: absolute; left: 0; top: 97px; display: flex; flex-wrap: nowrap; gap: 4px; width: 100%; max-width: 1280px; }
+.product-thumbs { position: absolute; left: 0; top: 64px; display: flex; flex-wrap: nowrap; gap: 4px; width: 100%; max-width: 1280px; }
 
 .product-card-destaque { 
   display: flex; 
