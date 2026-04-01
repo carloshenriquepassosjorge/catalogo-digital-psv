@@ -13,6 +13,22 @@ document.addEventListener('DOMContentLoaded', function() {
         heroSection ? heroSection.dataset['slide-2'] : null,
     ];
 
+    // Posição do background por slide — aplicada apenas no mobile (≤768px)
+    const heroPositions = [
+        'center',       // slide 0
+        'center',       // slide 1
+        'center right', // slide 2 — produto alinhado à direita
+    ];
+
+    function applySlidePosition(index) {
+        if (!heroSection) return;
+        if (window.innerWidth <= 768) {
+            heroSection.style.setProperty('--slide-position', heroPositions[index] || 'center');
+        } else {
+            heroSection.style.removeProperty('--slide-position');
+        }
+    }
+
     let transitioning = false;
 
     function goToSlide(index) {
@@ -21,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (transitioning) return;
 
         currentSlide = index;
+        applySlidePosition(currentSlide);
 
         const src = heroImagens[currentSlide];
 
@@ -78,6 +95,26 @@ document.addEventListener('DOMContentLoaded', function() {
     sliderDots.forEach((dot, index) => {
         dot.addEventListener('click', () => goToSlide(index));
     });
+
+    // Touch swipe no hero
+    let touchStartX = 0;
+
+    if (heroSection) {
+        heroSection.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].clientX;
+        }, { passive: true });
+
+        heroSection.addEventListener('touchend', (e) => {
+            const deltaX = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(deltaX) < 50) return; // ignora toques curtos
+            const nextIndex = deltaX < 0
+                ? (currentSlide + 1) % heroImagens.length          // swipe esquerda → próximo
+                : (currentSlide - 1 + heroImagens.length) % heroImagens.length; // swipe direita → anterior
+            stopAutoplay();
+            goToSlide(nextIndex);
+            startAutoplay();
+        }, { passive: true });
+    }
 
     // Inicializa o primeiro slide
     goToSlide(0);

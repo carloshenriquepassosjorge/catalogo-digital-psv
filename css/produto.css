@@ -984,6 +984,17 @@
 }
 
 @media (max-width: 768px) {
+    .hero-produto {
+        height: 400px;
+        min-height: 400px;
+        padding-top: 20px;
+    }
+
+    .hero-produto::before,
+    .hero-bg {
+        background-position: var(--slide-position, center);
+    }
+
     .hero-produto,
     .opcoes-section,
     .cta-produto {
